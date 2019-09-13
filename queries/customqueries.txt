@@ -1,0 +1,1 @@
+Select Id from Account where Name = 'PortalAccount'
