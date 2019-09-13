@@ -1,0 +1,122 @@
+<aura:component controller="XC_PaymetricSettingController" implements="force:hasRecordId,force:appHostable" access="global">
+    <aura:attribute name="envType" type="List"/>  
+    <aura:attribute name="developerNameValue" type="String"/>
+    <aura:attribute name="envSelectedValue" type="String"/>
+    <aura:attribute name="envTypeSelectedValue" type="String"/>
+    <aura:attribute name="allowUsertoSaveValue" type="Boolean"/>
+    <aura:attribute name="isActive" type="Boolean"/>
+    <aura:attribute name="storeFrontValue" type="String"/>
+    <aura:attribute name="environmentValue" type="String"/>
+    <aura:attribute name="masterLabelValue" type="String"/>
+    <aura:attribute name="successMSGValue" type="String"/>
+    <aura:attribute name="errorMSGValue" type="String"/>
+    <aura:attribute name="interceptDomainValue" type="String"/>
+    <aura:attribute name="merchantGUIDValue" type="String"/>
+    <aura:attribute name="interceptSharedKeyValue" type="String"/>
+    <aura:attribute name="hostNameValue" type="String"/>
+    <aura:attribute name="payUserNameValue" type="String"/>
+    <aura:attribute name="paySharedValue" type="String"/>    
+    <aura:attribute name="paySettingObject" type="XC_Paymetric_Setting__mdt"/>
+    <aura:attribute name="psController" type="XC_PaymetricSettingController"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:card>
+        <aura:set attribute="title">
+                       PAYMETRIC ADMIN
+        </aura:set>
+        <aura:set attribute="actions">
+            <lightning:select name="envSelect" label="Settings" value="{!v.envSelectedValue}" onchange="{!c.evnOnChange}">  
+                <option value="new">Create New Storefront Settings</option>
+                <aura:iteration items="{!v.psController.currentPSList}" var="opt">
+                    <option value="{!opt.DeveloperName}">{!opt.MasterLabel} ({!opt.WPB2B__XC_Storefront__c} - {!opt.WPB2B__Environment__c})</option>
+                </aura:iteration>   
+            </lightning:select>
+       </aura:set>
+        
+        <aura:set attribute="footer">
+            <lightning:button aura:id="updateId" variant="brand" label="Update" title="Update" onclick="{!c.insertUpdateClick}" />    
+    		<lightning:button aura:id="createId" variant="brand" label="Create" title="Create" onclick="{!c.insertUpdateClick}"/>
+        </aura:set>   
+  
+	<lightning:tabset variant="vertical" aura:id="tabId" selectedTabId="tabGeneral" class="paySettingTabSet">   
+        <lightning:tab label="General" id="tabGeneral" class="paySettingTab">
+            <div class="slds-grid slds-wrap slds-gutters">
+  				<div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="masterLabelId" type="text" name="masterLabel" label="Label" value="{!v.masterLabelValue}" />
+  				</div>
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:input aura:id="isActive" type="checkbox" name="isActive" label="Active" checked="{!v.isActive}" style="margin-top:10px;margin-bottom:10px;"/>
+                    </div>    
+                <div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="storeFrontId" type="text" name="storeFront" label="Storefront" value="{!v.storeFrontValue}" />
+  				</div>
+                <div class="slds-col slds-size_1-of-2">
+                     <lightning:select name="environment" label="Environment" aura:id="envTypeId" value="{!v.environmentValue}">  
+                        <aura:iteration items="{!v.psController.environmentTypeList}" var="opt">
+                            <option value="{!opt}">{!opt}</option>
+                        </aura:iteration>   
+                    </lightning:select>
+  				</div>  
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:input aura:id="allowUsertoSave" type="checkbox" name="allowUsertoSave" label="Allow User to Save Card" checked="{!v.allowUsertoSaveValue}" style="margin-top:10px;margin-bottom:10px;"/>
+                    </div> 
+                    <!--
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:input aura:id="successMessageId" type="text" name="successMSG" label="Success Message" value="{!v.successMSGValue}" />
+                    </div>
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:input aura:id="errorMessageId" type="text" name="errormessage" label="Error Message" value="{!v.errorMSGValue}" />
+                  </div> 
+                  -->
+                  <!--
+                  <div class="slds-col slds-size_1-of-2">
+                    </div>
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:input aura:id="autoCharge" type="checkbox" name="autoCharge" label="Auto Charge" checked="{!v.autoChargeValue}" style="margin-top:10px;margin-bottom:10px;"/>
+                    </div>
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning:select aura:id="chargeSchedule" name="chargeSchedule" label="Charge Schedule"  value="{!v.chargeScheduleValue}">
+                          <option value="">Pick One</option>
+                          <option value="Manual" selected="true">Manual</option>
+                          <option value="Daily">Daily</option>
+                          <option value="Weekly">Weekly</option>
+                      </lightning:select>
+                    </div>  
+                  -->     
+            </div>        
+        </lightning:tab>
+        <lightning:tab label="XI Intercept" id="tabXIIntercept" class="paySettingTab">
+            <div class="slds-grid slds-wrap slds-gutters">
+            	<div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="interceptDomainId" type="text" name="interceptDomain" label="XI Intercept Domain" value="{!v.interceptDomainValue}" />
+  				</div>
+                  <div class="slds-col slds-size_1-of-2">
+                      
+                    </div>
+                <div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="merchantGUIDId" type="text" name="merchantGUID" label="XI Intercept MerchantGUID" value="{!v.merchantGUIDValue}" />
+  				</div>
+                <div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="interceptSharedKeyId" type="text" name="interceptSharedKey" label="XI Intercept SharedKey" value="{!v.interceptSharedKeyValue}" />
+  				</div>
+            </div>
+        </lightning:tab>
+        <lightning:tab label="XI Pay" id="tabPay" class="paySettingTab">
+            <div class="slds-grid slds-wrap slds-gutters">
+            	<div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="hostNameId" type="text" name="hostName" label="XI Pay HostName" value="{!v.hostNameValue}" />
+  				</div>
+                  <div class="slds-col slds-size_1-of-2">
+                      
+                    </div>
+                <div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="payUserNameId" type="text" name="UserName" label="XI Pay Username" value="{!v.payUserNameValue}" />
+  				</div>
+                <div class="slds-col slds-size_1-of-2">
+    				<lightning:input required="true" aura:id="paySharedId" type="text" name="XIPaySharedKey" label="XI Pay SharedKey" value="{!v.paySharedValue}" />
+  				</div>
+            </div>
+        </lightning:tab>          
+    </lightning:tabset>
+    </lightning:card>
+</aura:component>

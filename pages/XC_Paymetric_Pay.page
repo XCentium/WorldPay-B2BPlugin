@@ -1,0 +1,451 @@
+<apex:page docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" applyHtmlTag="false" controller="XC_Ctrl_Paymetric" >
+ <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>-->
+ <script src="https://prdapp02.xisecurenet.com/DIeComm/Scripts/XIFrame/XIFrame-1.1.0.js" />
+
+ <style>
+     .button.makeCCPayment {
+         color: #ffffff;
+         width: 75%;
+         background-color: #24cf5f;
+         margin-left:6%;
+         padding: 12px 25px;
+         font-size: 12px;
+         letter-spacing: 1px;
+         text-transform: uppercase;
+         border: 0;
+         border-radius: 2px;
+         outline: 0;
+         box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+         transition: all .2s; }
+     .button.makeCCPayment:hover {
+         -ms-transform: scale(1.1);
+         transform: scale(1.1); }
+     #paymetricIFrame body {
+         background-color: #fff;
+     }
+     #paymetricIFrame .modal__content {
+         padding: 0;
+     }
+
+     .cc-sub-total {
+         font-size: 18px;
+     }
+
+     .cc-est-total {
+         font-size: 24px;
+     }
+    
+    /* Absolute Center Spinner */
+    .loading {
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: visible;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    
+    /* Transparent Overlay */
+    .loading:before {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.3);
+    }
+    
+    /* :not(:required) hides these rules from IE9 and below */
+    .loading:not(:required) {
+      /* hide "loading..." text */
+      font: 0/0 a;
+      color: transparent;
+      text-shadow: none;
+      background-color: transparent;
+      border: 0;
+    }
+    
+    .loading:not(:required):after {
+      content: '';
+      display: block;
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      margin-top: -0.5em;
+      -webkit-animation: spinner 1500ms infinite linear;
+      -moz-animation: spinner 1500ms infinite linear;
+      -ms-animation: spinner 1500ms infinite linear;
+      -o-animation: spinner 1500ms infinite linear;
+      animation: spinner 1500ms infinite linear;
+      border-radius: 0.5em;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+      box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+    }
+    
+    /* Animation */
+    
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-moz-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-o-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+ </style>
+
+ <script id="PaymentWP-Both" type="text/template">
+     <div class="loading" ></div>
+     <div class="ccPaymentOuterContainer valid">
+         <div class="main_content_large_right_container" id="creditCardForm">
+             <div class="alert alert-error ccPayment-messagingSection-Error" style="display: none"></div>
+             <div id="Status" class="alert alert-error ccPayment-messagingSection-Error error" style="display: none"></div>
+             <fieldset class="creditCardFieldset">
+                 <legend class="hide">Credit Card</legend>
+                 <div id="paymetricContainer">
+                 <iframe id="paymetricIFrame" src="{!HTMLENCODE(iframesrc)}" style="width: 100% !important; height: 400px !important;" frameborder="0" name="dieCommFrame" onload="IFrame_OnLoad();return false;"></iframe>
+                 </div>
+                 <div style="padding-bottom:10px; font-size: 18px; display: {!If(allowSaveCard,'','none') }">
+                 	<input type="checkbox" name="saveCC"> Save Credit Card<br>
+                 </div>
+             </fieldset>
+             <p class="two_buttons">
+             <div class="right form-buttons">
+                 <input type="button" class="btn btn-primary button makeCCPayment" id="btnMakeCCPayment" data-id="newCCForm" value="{{pageLabelMap 'Payment_MakePayment'}}" />
+                 <input type="hidden" id="AccessToken" value="{!accessToken}" />
+                 <input type="hidden" id="Signature" value="{!signature}" />
+                 <input type="hidden" id="iframeSRC" value="{!HTMLENCODE(iframesrc)}" />
+             </div>
+             </p>
+         </div>
+     </div>
+     <div class="cpoPaymentOuterContainer invalid">
+        <div class="main_content_large_right_container">
+            <div class="alert alert-error cpoPayment-messagingSection-Error" style="display: none"></div>
+            <form id="newCPOForm" action="" class="newCCForm" forceSSL="true">
+                    <p style="align:left">Error loading credit card screen.</p>
+            </form>
+        </div>
+    </div>
+ </script>
+
+ <script>
+
+     jQuery(function($) {
+         Handlebars.registerHelper("displayErrorMessage", function(){
+             var errorCode = CCRZ.pagevars.queryParams.errorCode;
+             if(errorCode != null && errorCode != '')
+             {
+                 var errMessage = getMessageFromCode(errorCode);
+                 if(errMessage != '')
+                 {
+                     $('.paymentOuterContainer .storedpayment-messagingSection-Error').text(errMessage);
+                     $('.paymentOuterContainer .storedpayment-messagingSection-Error').show();
+                     $('.ccPayment-messagingSection-Error').hide();
+                 }
+                 else
+                 {
+                     $('.paymentOuterContainer .storedpayment-messagingSection-Error').hide();
+                     $('.ccPayment-messagingSection-Error').hide();
+                 }
+                 CCRZ.pagevars.queryParams.errorCode = '';
+             }
+             else
+             {
+                 $('.paymentOuterContainer .storedpayment-messagingSection-Error').hide();
+                 $('.ccPayment-messagingSection-Error').hide();
+             }
+
+             return '';
+         });
+
+         CCRZ.models.PaymentsWPModel = CCRZ.CloudCrazeModel.extend();
+         CCRZ.views.PaymentsWPView = CCRZ.CloudCrazeView.extend({
+                 viewName : "PaymentsWPView",
+                 managedSubView : true,
+                 templateDesktop : CCRZ.util.template("PaymentWP-Both"),
+                 templatePhone : CCRZ.util.template("PaymentWP-Both"),
+                 init : function(options){
+                     this.selector = options.selector;
+                     this.render();
+                     CCRZ.pubSub.trigger('action:paymentViewInit',this);
+                 },
+                 events: {
+                     "click .makeCCPayment" : "makeCCPayment"
+                 },
+                 validateInfo: function(formName, fieldData) {
+                     $("#"+formName).validate({
+                         invalidHandler: function(event, validator) {
+                             CCRZ.handleValidationErrors(event, validator, 'ccPayment-messagingSection-Error', false);
+                         },
+                         rules: {
+                             accountNumber : { required: true, minlength: 4 }
+                         },
+                         messages: {
+                             accountNumber : { required : 'Card number is required', minlength: 'Card number is not valid' }
+                         },
+                         errorPlacement: function(error, element) {
+                         }
+                     });
+                     return $("#"+formName).valid();
+                 },
+
+                 parentPreRender : function(){
+                     //Look for the instantiated iframe
+                     //Detach it from the DOM
+                     //Re-render the view but don't create the iframe
+                     //Re-attach the iframe as appropriate in the rendered view
+                 },
+                 renderDesktop : function(){
+                     this.setElement(this.selector);
+                     this.data={};
+                     this.$el.html(this.templateDesktop(this.data));
+                 },
+                 renderPhone : function(){
+                     this.setElement(this.selector);
+                     this.data={};
+                     this.$el.html(this.templatePhone(this.data));
+                 },
+                 makeCCPayment : function(event){
+                     submitform();
+                 },
+             });
+        
+         CCRZ.pubSub.trigger('action:paymentViewReady','wp',function(options){
+             CCRZ.payment = CCRZ.payment||{views:{}};
+             CCRZ.payment.views.wp = new CCRZ.views.PaymentsWPView({
+                 model : new CCRZ.models.PaymentsWPModel(),
+                 selector : options.selector
+             });
+         });
+
+     });
+    
+    CCRZ.models.StoredPaymentsWPModel = CCRZ.CloudCrazeModel.extend();
+    CCRZ.views.StoredPaymentsWPView = CCRZ.CloudCrazeView.extend({
+      viewName : "StoredPaymentsWPView",
+      managedSubView : true,
+      templateDesktop : CCRZ.util.template(CCRZ.util.template("PaymentWP-Both")),
+      templatePhone : CCRZ.util.template(CCRZ.util.template("PaymentWP-Both")),
+      init : function(){
+       this.render();
+      },
+      renderDesktop : function(){
+       $(CCRZ.uiProperties.StoredPaymentsWPView.phone.selector).empty();
+       this.setElement($(CCRZ.uiProperties.StoredPaymentsWPView.desktop.selector));
+       this.$el.html(this.templateDesktop({}));
+      },
+      renderPhone : function(){
+       $(CCRZ.uiProperties.StoredPaymentsWPView.desktop.selector).empty();
+       this.setElement($(CCRZ.uiProperties.StoredPaymentsWPView.phone.selector));
+       this.$el.html(this.templatePhone({}));
+      },
+      postRender : function() {
+          
+      }
+     });
+    
+     CCRZ.paymentViews = CCRZ.paymentViews || {};
+     CCRZ.paymentViews.wp = new CCRZ.views.StoredPaymentsWPView({
+      model : new CCRZ.models.StoredPaymentsWPModel
+     });
+
+    
+     function IFrame_OnLoad() {
+         $('.checkoutPaymentTarget').css('min-height',0);
+
+        var isError = {!error};
+        if(!isError){
+            $('.cpoPaymentOuterContainer.invalid').hide();
+            $('.ccPaymentOuterContainer.valid').show();
+            $XIFrame.onload ({
+                iFrameId: "paymetricIFrame",
+                targetUrl: "{!HTMLENCODE(iframesrc)}",
+                autosizewidth: false
+            });
+            if($('.cc_stored_payments_container > .cc_payment_action_container > .cc_action_buttons > button').length > 0){
+                var clnStorePayment = $('.cc_stored_payments_container > .cc_payment_action_container > .cc_action_buttons > button')[0].cloneNode(true);
+                $(clnStorePayment).toggleClass('useStoredPayment').toggleClass('cc_use_stored_payment').toggleClass('wpStoredPayment');
+                $('.cc_stored_payments_container > .cc_payment_action_container > .cc_action_buttons').append(clnStorePayment);
+                $('.cc_use_stored_payment').hide();
+                $('.wpStoredPayment').css('padding', $('.cc_use_stored_payment').css('padding'));
+                $('.wpStoredPayment').css('font-size', $('.cc_use_stored_payment').css('font-size'));
+                $('.cc_stored_payments_container.wp').toggleClass('wpStoredPayments');
+                
+                $('.wpStoredPayment').click(function(e){
+                    var accessToken = document.getElementById('AccessToken');
+                    var signature = document.getElementById('Signature');
+                    var defaultStoreCurrency = CCRZ.pagevars.storeSettings.DefaultCurrencyCode__c;
+                    var saveCard = $("input[name='saveCC']").prop('checked');
+                    var selectedRadio =  $('.storedPaymentSelection').filter(":checked")[0];
+                    if($('.wpStoredPayments').filter(":has(label." + selectedRadio.value + ")").length > 0){
+                        var remoteCall = _.extend(CCRZ.RemoteInvocation,{className:'WPB2B.XC_Ctrl_Paymetric'});
+                        remoteCall.invokeCtx(
+                                 'chargeStoredPayment', signature.value, accessToken.value, defaultStoreCurrency, saveCard, CCRZ.cartCheckoutModel.attributes.billingAddress,
+                                                    CCRZ.cartCheckoutModel.attributes.shippingAddress, selectedRadio.value, 
+                                 function(resp){
+                                     if(resp && resp.data['ERROR'] == null){
+										 CCRZ.pubSub.trigger('action:processPayment', resp.data['txObject']);
+                                     }
+                                     else{
+                                         var errorCode = resp.data['ERROR'];
+                                         $('#Status').text(errorCode);
+                                         $('#Status').css('color', 'red');
+                                         $('#Status').show();
+
+                                         $('.loading').hide();
+                                         $('.makeCCPayment').prop('disabled',false);
+                                     }
+                                 },
+                                 {buffer:false,escape:false,nmsp:false}
+                         );
+                    }                        
+                    else{
+                        $('.cc_use_stored_payment').click();
+                    }
+                });
+            }
+
+            jQuery('html,body').animate({scrollTop:0},0);
+        }else{
+            console.log('{!errorMessage}');
+            $('.cpoPaymentOuterContainer.invalid').show();
+            $('.ccPaymentOuterContainer.valid').hide();
+        }
+         $('.loading').hide();
+
+     }
+
+     function submitform() {
+         $('.loading').show();
+         var iframe = document.getElementsByName('dieCommFrame');
+         if (iframe) {
+             $XIFrame.submit({
+                 iFrameId: 'paymetricIFrame',
+                 targetUrl: iframe[0].getAttribute("src"),
+                 onSuccess: function (msg) {
+                     $('.makeCCPayment').prop('disabled',true);
+                     var message = JSON.parse(msg);
+                     if (message && message.data.HasPassed) {
+                         var accessToken = document.getElementById('AccessToken');
+                         var signature = document.getElementById('Signature');
+                         var defaultStoreCurrency = CCRZ.pagevars.storeSettings.DefaultCurrencyCode__c;
+                         var saveCard = $("input[name='saveCC']").prop('checked');
+
+                         $('.processPaymentBtn').attr('disabled',true);
+                         window.scrollTo(0,0);
+                         var remoteCall = _.extend(CCRZ.RemoteInvocation,{className:'WPB2B.XC_Ctrl_Paymetric'});
+                         remoteCall.invokeCtx(
+                                 'getTokenResults', signature.value, accessToken.value, defaultStoreCurrency, saveCard, CCRZ.cartCheckoutModel.attributes.billingAddress,
+                                                    CCRZ.cartCheckoutModel.attributes.shippingAddress,
+                                 function(resp){
+                                     if(resp && resp.data['ERROR'] == null){
+										 CCRZ.pubSub.trigger('action:processPayment', resp.data['txObject']);
+                                     }
+                                     else{
+                                         var errorCode = resp.data['ERROR'];
+                                         $('#Status').text(errorCode);
+                                         $('#Status').css('color', 'red');
+                                         $('#Status').show();
+
+                                         $('#paymetricIFrame').attr('src', resp.data['newIframeSrc']);
+                                         $('#AccessToken').val(resp.data['newaccessToken']);
+                                         $('.loading').hide();
+                                         $('.makeCCPayment').prop('disabled',false);
+                                     }
+                                 },
+                                 {buffer:false,escape:false,nmsp:false}
+                         );
+                     } else {
+                         $('#Status').text('Error processing credit card. Please retry.');
+                         $('#Status').show();
+                         $('.loading').hide();
+                     }
+                 },
+                 onError: function (msg) {
+                     $('#Status').text('Error processing credit card. Please retry.');
+                     $('#Status').show();
+                     console.log(msg);
+                     $('.loading').hide();
+                 }
+             });
+         } else {
+             console.log('not iframe');
+         }
+     }
+
+     jQuery(function($) {
+         $('.money').each(function(){
+             var amount = $(this).text();
+             amount = amount.substring(0,amount.indexOf('.'));
+
+             $(this).text(amount);
+             $(this).simpleMoneyFormat();
+             $(this).append('.00');
+         });
+     });
+ </script>
+
+</apex:page>

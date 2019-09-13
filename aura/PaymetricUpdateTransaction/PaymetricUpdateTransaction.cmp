@@ -1,0 +1,4 @@
+<aura:component controller="XC_Ctrl_Paymetric" implements="force:lightningQuickAction,force:hasRecordId">    
+    <ui:button label="Reverse Authorization" press="{!c.reverseAuth}"/> 
+    <ui:button label="Charge Transaction" press="{!c.chargeTrans}"/> 
+</aura:component>

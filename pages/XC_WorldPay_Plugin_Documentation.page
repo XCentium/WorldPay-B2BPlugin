@@ -1,0 +1,378 @@
+<apex:page docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" applyHtmlTag="false" lightningStylesheets="true">
+    <link href="https://fonts.googleapis.com/css?family=Rokkitt&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <style>
+    	.menu{
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 2vh;
+        	background-color: #828282;
+        	text-align:center;
+        	vertical-align: middle;
+        	line-height: 4vh;
+            color: white;
+            font-family: 'Righteous', cursive;
+        }
+        .documentDiv{
+        	margin-bottom:35px;
+        }
+        hr.style-two {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+        }
+    </style>
+   <apex:slds />
+    <div class="slds-scope">
+   <div class="content" style="display:inline-flex; padding-bottom:10vh;">
+       <div style="width:50vw;background-color:#FAFAFB;padding-top:20px;height:100vh;">
+           
+          <nav class="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
+            <apex:image id="braintreeMainPicmenu" value="{!$Resource.WorldPayLogo}" alt="World Pay" style="height:60px;display:block;margin-left:auto;margin-right:auto"/>
+                    
+              <br/><br/>
+            <div class="slds-nav-vertical__section">
+              <h2 id="entity-header" class="slds-nav-vertical__title">Welcome</h2>
+              <ul aria-describedby="entity-header">
+                <li class="slds-nav-vertical__item">
+                  <a href="#overview" class="slds-nav-vertical__action">B2B Plugin Overview</a>
+                </li>
+              </ul>
+            </div>
+            <div class="slds-nav-vertical__section">
+              <h2 id="folder-header" class="slds-nav-vertical__title">Using the Plugin</h2>
+              <ul aria-describedby="folder-header">
+                <li class="slds-nav-vertical__item">
+                  <a href="#pluginworks" class="slds-nav-vertical__action">How the Plugin Works</a>
+                </li>
+                <li class="slds-nav-vertical__item">
+                  <a href="#WorldPaycreds" class="slds-nav-vertical__action">WorldPay/Paymetric Credentials</a>
+                </li>
+                <li class="slds-nav-vertical__item" style="padding-left:15px">
+                  <a href="#WorldPayfields" class="slds-nav-vertical__action">Fields</a>
+                </li>
+                <li class="slds-nav-vertical__item">
+                  <a href="#managingTransaction" class="slds-nav-vertical__action">Managing a Transaction</a>
+                </li>
+              </ul>
+            </div>
+            <div class="slds-nav-vertical__section">
+              <h2 id="entity-header" class="slds-nav-vertical__title">Payment Types</h2>
+              <ul aria-describedby="entity-header">
+                <li class="slds-nav-vertical__item">
+                  <a href="#enablepay" class="slds-nav-vertical__action">Enable Payment Type</a>
+                </li>
+                <li class="slds-nav-vertical__item">
+                  <a href="#disablepay" class="slds-nav-vertical__action">Disable Payment Type</a>
+                </li>
+              </ul>
+            </div>
+            <div class="slds-nav-vertical__section">
+              <h2 id="folder-header" class="slds-nav-vertical__title">Misc</h2>
+              <ul aria-describedby="folder-header">
+                <li class="slds-nav-vertical__item">
+                  <a href="#copyright" class="slds-nav-vertical__action">Terms of Use</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+       <div class="documentation" style="margin-left:45px;padding-top:20px;margin-right:45px;">
+           <div id="overview" class="documentDiv">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   B2B Plugin Overview
+               </h2><br/><br/>
+               <br/><br/>
+               The WorldPay/Paymetric B2B Plugin is a lightweight app that utilizes WorldPay’s Xi-Intercept and Xi-Pay service. It provides the ability to process credit cards via WorldPay’s PCI complianant solution to ensurethat your customers have a safe and easy way to checkout and you are able to process/charge/void transactions in a secure and easy manner.
+               <br/> <br/>
+				<h3 style="font-size: initial;">Initial Setup</h3>
+               <br/>
+				To initialize the WorldPay/Paymetric B2B Plugin, first set up a sandbox/production account with Braintree. Ensure that you have a working B2B storefront with valid accounts, products and pricelist items associated with them. Please note that this plugin requires Lightning with My Domain enabled.
+               <br/><br/>
+               <h5><i>Post Installation Steps</i></h5><br/>
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Create a valid B2B storefront (Out of scope for this documentation)</li>
+                   <li>Create WorldPay accounts (Sandbox or Production) (Out of scope for this documentation)</li>
+                   <li>Setup the WorldPay credentials in the B2B Plugin</li>
+                   <li>Add the CC Transaction Payments Related List to the CC Orders Layout</li>
+                   <li>Add the Process Transaction Lighting Action to the  CC Transaction Payments Layout</li>
+                   <li>Create a new Cache</li>
+               </ol>
+               <hr class="style-two" />
+           </div>
+           <div id="pluginworks">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   How the Plugin Works
+               </h2><br/>
+               Before you begin, here's a big-picture view of how B2B Plugin works:<br/><br/>
+               <p>
+                   User logs in to the storefront, proceeds to the checkout and selects their payment method by entering their credit card details, then clicks Pay to complete their checkout.
+               </p>
+               <p>
+                   You can then charge or void the transaction by going into the CC Order > CC Transaction Payment record.
+               </p>
+               <hr class="style-two" />
+           </div>
+           <div id="WorldPaycreds">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   WorldPay/Paymetric Credentials in the B2B Plugin
+               </h2><br/>
+               When setting up the WorldPay/Paymetric Credentials in the B2B Plugin, ensure that as a System Administrator you are able to locate and view the Braintree Settings tab.
+               <br/><br/>
+				Once you can access the tab, you should see a view like this:
+               <br/><br/>
+               <apex:image id="PaymetricSettingsImg" value="{!$Resource.PaymetricSettingsImg}" alt="WorldPay Settings"/>
+               
+               <br/><br/>
+				Below are the details for each of the fields and the information to insert
+			   <br/><br/>
+               <table class="w3-table-all w3-card-4">
+                <tr style="background-color:#a9a9a9; color:white; font-weight:bold;">
+                  <th>Field Name</th>
+                  <th>Data Type</th>
+                  <th>Description</th>
+                </tr>
+                <tr>
+                  <td>Label</td>
+                  <td>String</td>
+                  <td>Custom Label for you to Name the settings in a user-friendly manner. You can select a particular set of credentials to edit by selecting this name from the top-right drop-down in the settings screen.</td>
+                </tr>
+                <tr>
+                  <td>Storefront</td>
+                  <td>String</td>
+                  <td>The name of the storefront which matches with the storefront name as defined in CC Admin. Please note that this is case-sensitive.</td>
+                </tr>
+                <tr>
+                  <td>Environment</td>
+                    <td>Picklist <br/><br/>QA | Prod</td>
+                  <td>This field is to ensure that the payments are processed through to the correct WorldPay/Paymetric environment. If you are testing WorldPay/Paymetric access, Select QA and enter the appropriate sandbox credentials in the fields below.</td>
+                </tr>
+                <tr>
+                  <td>Active</td>
+                  <td>Checkbox</td>
+                  <td>Determines whether the set of credentials being entered should be active for this storefront or not. 
+                      <br/><br/><span style="font-style: oblique;">Tip: Only one set of credentials can be active per storefront. If you have multiple environments tied to a single storefront, whenever you activate one of the environments, the other environments will be deactivated.</span>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Allow User to Save Card</td>
+                  <td>Checkbox</td>
+                  <td>Determines whether the option to save a credit card details should be availble on the front-end checkout.
+                      <br/><br/><span style="font-style: oblique;">Tip: Credit Card Numbers are not stored in Salesforce, the parameterized token is stored instead</span>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Endpoint URL</td>
+                  <td>String (URL)</td>
+                  <td>API URL that is provided by WorldPay/Paymetric upon account creation. This is the URL that is the used to connect to the WorldPay/Paymetric servers.</td>
+                </tr>
+                <tr>
+                  <td>XI Intercept Domain</td>
+                  <td>String</td>
+                  <td>Merchant Domain provided by WorldPay/Paymetric. Different for QA vs Prod</td>
+                </tr>
+                <tr>
+                  <td>XI Intercept MerchantGUID</td>
+                  <td>String</td>
+                  <td>Public Key provided by WorldPay/Paymetric</td>
+                </tr>
+                <tr>
+                  <td>XI Intercept SharedKey</td>
+                  <td>String</td>
+                  <td>Private Key provided by WorldPay/Paymetric</td>
+                </tr>
+                <tr>
+                  <td>XIPay HostName</td>
+                  <td>String</td>
+                  <td>Merchant Domain provided by WorldPay/Paymetric. Different for QA vs Prod</td>
+                </tr>
+                <tr>
+                  <td>XI Pay Username</td>
+                  <td>String</td>
+                  <td>Public Key provided by WorldPay/Paymetric</td>
+                </tr>
+                <tr>
+                  <td>XI Pay SharedKey</td>
+                  <td>String</td>
+                  <td>Private Key provided by WorldPay/Paymetric</td>
+                </tr>
+              </table>
+               <br/><br/><span style="font-style: oblique;">Tip: Note that when updating the credentials it typically takes a minute or two for it to be updated. Please refresh to see the latest changes after making a change and wait for a minute or two.</span>
+               
+               <br/><br/>
+               Once you have configured WorldPay/Paymetric Braintree Settings, create a new configuration cache.<br/><br/>
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Go to the CC Admin Tab in the B2B Commerce App</li>
+                   <li>Click on Configuration Cache Management in the Global Settings menu</li>
+                   <li>Click on New to create a new cache</li>
+               </ol><br/><br/>
+               Activate the new Cache once its created (It might take a few minutes for the cache to be created)
+               
+               <hr class="style-two" />
+           </div>
+           
+           <div id="WorldPayfields">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   CC Transaction Field Mapping
+               </h2><br/>
+               Below Is a summary of the field mapping for the fields In the CC Transaction Object (Child Object to the CC Orders) where the payment Information Is stored
+               <br/><br/>
+               <table class="w3-table-all w3-card-4">
+                   <tr><td colspan="3" style="text-align:center;">WorldPay/Paymetric B2B Plugin – CC Transactions – Field Map</td></tr>
+                <tr style="background-color:#a9a9a9; color:white; font-weight:bold;">
+                  <td>Field Name</td>
+                  <td>Data Type</td>
+                  <td>Description</td>
+                </tr>
+                <tr>
+                  <td>CC Transaction Payment Name</td>
+                  <td>String</td>
+                  <td>Unique Alphanumeric Identifier for the transaction</td>
+                </tr>
+                <tr>
+                  <td>Transaction Timestamp</td>
+                  <td>DateTime</td>
+                  <td>Date/Time stamp for when the transaction was processed</td>
+                </tr>
+                <tr>
+                  <td>Account Number</td>
+                  <td>String</td>
+                  <td>Last 4 Digits of the Credit Card that was used</td>
+                </tr>
+                <tr>
+                  <td>Account Type</td>
+                  <td>String</td>
+                  <td>Static Value</td>
+                </tr>
+                <tr>
+                  <td>Storefront</td>
+                  <td>String</td>
+                  <td>Original Storefront where the transaction originated</td>
+                </tr>
+                <tr>
+                  <td>Expiration Month</td>
+                  <td>String</td>
+                  <td>Expiration Month for the Credit Card</td>
+                </tr>
+                <tr>
+                  <td>Expiration Year</td>
+                  <td>String</td>
+                  <td>Expiration Year for the Credit Card</td>
+                </tr>
+                <tr>
+                  <td>Request Amount</td>
+                  <td>String</td>
+                  <td>Amount that is used in the transaction request</td>
+                </tr>
+                <tr>
+                  <td>Payment Type</td>
+                  <td>String</td>
+                  <td>WorldPay/Paymetric Payment Type (Visa, MasterCard, etc)</td>
+                </tr>
+                <tr>
+                  <td>Transaction Type</td>
+                  <td>String</td>
+                  <td>Status of the transaction</td>
+                </tr>
+                <tr>
+                  <td>Token</td>
+                  <td>String</td>
+                  <td>Unique Alphanumeric identifier for WorldPay/Paymetric</td>
+                </tr>
+                <tr>
+                  <td>Transaction Code</td>
+                  <td>String</td>
+                  <td>Unique Alphanumeric identifier for WorldPay/Paymetric Transaction. This changes per transaction request (Charge, Void)</td>
+                </tr>
+              </table>
+               <br/><br/>
+               <hr class="style-two" />
+           </div>
+           <div id="managingTransaction">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   Managing a Transaction
+               </h2><br/><br/>
+               When processing transactions through the WorldPay/Paymetric B2B Plugin, depending upon the requirement you may need to do a manual authorization, a void of the transaction.
+               <br/><br/>
+               <h4>
+                   <b>Manual Authorization (Charge)</b>
+               </h4><br/><br/>
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Navigate to the CC Order that the user had placed that you are trying to authorize</li>
+                   <li>In the related list, navigate to the related CC Transaction Payment and in the Actions menu click on 'Process Transaction' (If you do not see the option, please reach out to your System Administrator)</li>
+                   <li>Once you click on the 'Process Transaction' Quick Action, you will see the option to 'Charge Transaction'</li>
+                   <li>Click on It to manually authorize the transaction</li>
+               </ol><br/><br/>
+               <h4>
+                   <b>Void</b>
+               </h4><br/><br/>
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Navigate to the CC Order that the user had placed that you are trying to authorize</li>
+                   <li>In the related list, navigate to the related CC Transaction Payment and in the Actions menu click on 'Process Transaction' (If you do not see the option, please reach out to your System Administrator)</li>
+                   <li>Once you click on the 'Process Transaction' Quick Action, you will see the option to 'Void Transaction'</li>
+                   <li>Click on It to Void the transaction</li>
+               </ol><br/><br/>
+               <hr class="style-two" />
+           </div>
+           <div id="enablepay">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   Enabling/Disabling WorldPay/Paymetric Payment Type in the CC Admin
+               </h2><br/>
+               <br/><br/><span style="font-style: oblique;">Tip: Note that upon install, WorldPay/Paymetric is adding a payment type in the Global Storefront, if you choose to disable/enable it per storefront please follow the process below.</span>
+               
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Go the Storefront that you want to configure WorldPay/Paymetric setup for</li>
+                   <li>Click on the Configuration Settings in the Left-side menu</li>
+                   <li>Click on Checkout Module</li>
+                   <li>Click on Payment Types and Override the Global Setting and add/remove ‘wp’ from the values field </li>
+                   <li>Click on My Wallet Module</li>
+                   <li>Click on Payments and Override the Global Setting and add/remove ‘wp’ from the values field</li>
+                   <li>Go to the Configuration Cache management and create a new cache</li>
+               </ol><br/><br/>
+               <hr class="style-two" />
+           </div>
+           <div id="disablepay">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   Disabling WorldPay/Paymetric Payment Type in the CC Admin
+               </h2><br/>
+               <ol style="list-style-type: decimal;list-style-position:inside;">
+                   <li>Go the Storefront that you want to configure WorldPay/Paymetric setup for</li>
+                   <li>Click on the Configuration Settings in the Left-side menu</li>
+                   <li>Click on Checkout Module</li>
+                   <li>Click on Payment Types and Override the Global Setting and remove ‘pp’ from the values field </li>
+                   <li>Click on My Wallet Module</li>
+                   <li>Click on Payments and Override the Global Setting and remove ‘pp’ from the values field</li>
+                   <li>Go to the Configuration Cache management and create a new cache</li>
+               </ol><br/><br/>
+               <hr class="style-two" />
+           </div>
+           <div id="copyright">
+               <h2 style="font-weight: 900;font-size: initial;">
+                   Terms of Use
+               </h2><br/>
+               <p>
+               ATTENTION: PLEASE READ THIS STATEMENT CAREFULLY BEFORE USING THIS “Plugin”. YOUR USE OF THIS PLUGIN CONSTITUTES YOUR ACCEPTANCE OF THIS COPYRIGHT STATEMENT AND TERMS OF USE (COLLECTIVELY, “TERMS OF USE”). IF YOU DO NOT ACCEPT THESE TERMS OF USE, DO NOT USE THIS PLUGIN.    
+               </p><br/>
+               <p>
+                   WorldPay/Paymetric reserves the right to modify these Terms of Use without notice and any modifications are effective immediately. Access to the Web Site may be monitored by Paymetric. If you are accessing this Web Site as a representative of an organization, these Terms of Use bind both you individually and the organization and references to “you” and “your” shall be construed to apply to you individually and the organization.
+               </p><br/>
+                <p>
+                As a condition of your use of this Web Site, you will not use the Web Site or the Web Site Information for any purpose that is unlawful or prohibited by these Terms of Use. You will not use this Web Site in any manner that could damage, disable, overload or impair the operation of this Web Site or use by third parties.
+                </p><br/>
+                <p>
+                Certain restricted product information is available on this Web Site only to customers of Paymetric. This restricted information is considered confidential and proprietary information of Paymetric.  If you are a registered customer or a representative of a registered customer, Paymetric authorizes you to download, copy, distribute and use the restricted information only within the customer organization, and only for the intended purposes authorized by Paymetric. Issuance of a registration password is conditioned on the customer’s use of the information in accordance with the terms of their agreement with Paymetric. You shall not transfer your password to unauthorized parties. You are responsible for use of your password. You will not attempt to gain unauthorized access to any Web Site Information or area within this Web Site.
+                </p><br/>
+                <p>
+                Certain information is provided by other parties. You understand that all such information, data and text, are the sole responsibility of the party who originated it and that Paymetric, Inc. has no responsibility for such content and does not guarantee the accuracy, integrity or quality of such content.
+                </p><br/>
+                <p>
+                Neither WorldPay/Paymetric nor any of its affiliates or suppliers or its or their officers, directors, employees, agents, representatives or subcontractors (collectively, Paymetric) shall be liable for any loss or liability resulting, directly or indirectly, from delays or interruptions due to electronic or mechanical equipment failures, denial of service attacks, data processing failures, telecommunications or Internet problems, utility failures or problems, defects, weather, strikes, walkouts, fire, acts of God, riots, armed conflicts, acts of war or other like causes beyond the reasonable control of Paymetric.
+                </p>     
+			   <hr class="style-two" />
+           </div>
+       </div>
+   </div>
+    </div>
+</apex:page>

@@ -1,0 +1,20 @@
+.THIS .paySettingTabSet{
+    height:50vh;
+}
+
+.THIS .paySettingTabSet .slds-vertical-tabs__nav{
+    height:100%;
+}
+
+.THIS .paySettingTabSet .slds-vertical-tabs__nav-item{
+    height:12.5vh;
+}
+
+.THIS .slds-card__footer{
+    margin-top:0;
+}
+
+
+.THIS .slds-card__body{
+    margin-bottom:0;
+}
