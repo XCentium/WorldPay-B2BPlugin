@@ -1,5 +1,5 @@
 /**
- * Unit tests for the BitConverter class. 
+ * Unit tests for the BitConverter class.. 
  *
  * @author Nate Wallace
  */
